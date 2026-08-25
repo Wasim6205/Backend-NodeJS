@@ -14,8 +14,10 @@ router.get("/allNotes", getAllNotesController)
 // READ ONE
 router.get("/:id", getSingleNoteController)
 
-// UPDATE
+// UPDATE VIA PUT
 router.put("/:id", updateNoteController)
+
+// UPDATE VIA PATCH
 
 // DELETE
 router.delete("/:id", deleteNoteController)
