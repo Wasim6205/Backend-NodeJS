@@ -9,6 +9,7 @@ const App = () => {
         title:"",
         description:""
     })
+    const [updateNoteId, setUpdateNoteId] = useState(null)
 
     const [allNotes,setAllNotes] = useState([])
 
@@ -29,12 +30,21 @@ const App = () => {
         getAllNotes()
     },[])
 
+
     const handleSubmit = async (e) => {
         e.preventDefault()
-        
-        // api call
-        let res = await axios.post(`http://localhost:4000/notes/create`,formValues)
-        console.log(res);
+
+        if(updateNoteId){
+            // api call for update note
+            let res = await axios.put(`http://localhost:4000/notes/${updateNoteId}`,formValues)
+            console.log(res);
+            setUpdateNoteId(null)
+        }else{
+            // api call for create note
+            let res = await axios.post(`http://localhost:4000/notes/create`,formValues)
+            console.log(res);
+        }
+    
         getAllNotes()
         setFormValues({
             title: "",
@@ -54,7 +64,11 @@ const App = () => {
     }
 
     let noteForUpdate = (note) => {
-
+        setUpdateNoteId(note._id)
+        setFormValues({
+            title: note.title,
+            description: note.description
+        })
     }
     
   return (
@@ -64,12 +78,12 @@ const App = () => {
         <form onSubmit={handleSubmit} className='flex flex-col gap-5 w-70 border border-white rounded-xl p-4'>
             <input onChange={handleChange} value={formValues.title} name='title' className='p-2 outline-none text-xl rounded border border-white' type="text" placeholder='Title' />
             <input onChange={handleChange} value={formValues.description} name='description' minLength={20} required className='p-2 outline-none text-xl rounded border border-white' type="text" placeholder='Description' />
-            <button className='bg-blue-600 text-white p-2 rounded'>Add Note</button>
+            <button className='bg-blue-600 text-white p-2 rounded'>{updateNoteId ? "Update note" : "Add note"}</button>
         </form>
 
-        <div className='flex gap-5'>
+        <div className='flex gap-5 flex-wrap'>
             {allNotes.map((val) => (
-                <NoteCard key={val._id} note={val} deleteNote={deleteNote} />
+                <NoteCard key={val._id} note={val} deleteNote={deleteNote} noteForUpdate={noteForUpdate} />
             ))}
         </div>
     </div>
