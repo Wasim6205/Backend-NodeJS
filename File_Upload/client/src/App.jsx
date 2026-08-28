@@ -1,6 +1,23 @@
 import React from 'react'
+import { useForm } from "react-hook-form"
+import axios from 'axios'
 
 const App = () => {
+
+  const {register, handleSubmit, reset} = useForm()
+
+  const submitHandler = async (data) => {
+
+    const formData = new FormData()
+    formData.append("name", data.name)
+    formData.append("email", data.email)
+    formData.append("profile_pic", data.profile_pic[0])
+
+    let res = await axios.post("http://localhost:3002/user/create", formData)
+    
+    reset()
+  }
+  
   return (
     <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6">
       <div className="w-full max-w-md rounded-2xl bg-white p-8 shadow-xl shadow-slate-200 ring-1 ring-slate-200">
@@ -9,12 +26,13 @@ const App = () => {
           <p className="mt-2 text-sm text-slate-500">Create your profile details</p>
         </div>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit(submitHandler)} className="space-y-5">
           <div>
             <label htmlFor="name" className="mb-2 block text-sm font-medium text-slate-700">
               Name
             </label>
             <input
+              {...register("name")}
               id="name"
               type="text"
               name="name"
@@ -28,6 +46,7 @@ const App = () => {
               Email
             </label>
             <input
+            {...register("email")}
               id="email"
               type="email"
               name="email"
@@ -41,6 +60,7 @@ const App = () => {
               Profile Pic
             </label>
             <input
+            {...register("profile_pic")}
               id="profile_pic"
               type="file"
               name="profile_pic"
