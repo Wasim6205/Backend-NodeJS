@@ -1,10 +1,14 @@
-const express = require("express")
-const fileRoute = require("./routes/file.route")
+const express = require("express");
+const fileRoute = require("./routes/file.route");
 
-const app = express()
+const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-app.use('/file', fileRoute)
+app.get("/", (req, res) => {
+  res.send("backend running successfully");
+});
 
-module.exports = app
+app.use("/file", fileRoute);
+
+module.exports = app;

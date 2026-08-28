@@ -1,12 +1,15 @@
-const express = require("express")
+const express = require("express");
+const upload = require("../config/multer");
 
 const router = express.Router()
 
-router.post("/", async (req,res) => {
+router.post("/", upload.single('image'), async (req,res) => {
     try {
         let body = req.body
-        console.log(body);
+        let file = req.file
         
+        console.log(file);
+        console.log(body);
         
         res.status(200).json({
             message:"file received successfully"
