@@ -4,6 +4,6 @@ const { create } = require("../controllers/user.controller")
 
 const router = express.Router()
 
-router.post("/create", upload.single("profile_pic"), create)
+router.post("/create", upload.array("images"), create)
 
 module.exports = router

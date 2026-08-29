@@ -11,7 +11,7 @@ const App = () => {
     const formData = new FormData()
     formData.append("name", data.name)
     formData.append("email", data.email)
-    formData.append("profile_pic", data.profile_pic[0])
+    formData.append("images", data.images[0])
 
     let res = await axios.post("http://localhost:3002/user/create", formData)
     
@@ -60,11 +60,12 @@ const App = () => {
               Profile Pic
             </label>
             <input
-            {...register("profile_pic")}
+            {...register("images")}
               id="profile_pic"
               type="file"
               name="profile_pic"
               accept="image/*"
+              multiple
               className="block w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-600 file:mr-4 file:rounded-full file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-blue-700"
             />
           </div>
