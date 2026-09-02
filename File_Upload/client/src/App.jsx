@@ -7,13 +7,17 @@ const App = () => {
   const {register, handleSubmit, reset} = useForm()
 
   const submitHandler = async (data) => {
-
+    console.log(data);
     const formData = new FormData()
     formData.append("name", data.name)
     formData.append("email", data.email)
-    formData.append("images", data.images[0])
+    for(let i=0; i<data.images.length; i++){
+      formData.append("images", data.images[i])
+    }
 
-    let res = await axios.post("http://localhost:3002/user/create", formData)
+    let res = await axios.post("http://localhost:3002/user/create", formData, {
+      withCredentials: true
+    })
     
     reset()
   }
@@ -33,9 +37,7 @@ const App = () => {
             </label>
             <input
               {...register("name")}
-              id="name"
               type="text"
-              name="name"
               placeholder="Enter your name"
               className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
@@ -47,9 +49,7 @@ const App = () => {
             </label>
             <input
             {...register("email")}
-              id="email"
               type="email"
-              name="email"
               placeholder="Enter your email"
               className="w-full rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 text-slate-800 placeholder:text-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
@@ -61,9 +61,7 @@ const App = () => {
             </label>
             <input
             {...register("images")}
-              id="profile_pic"
               type="file"
-              name="profile_pic"
               accept="image/*"
               multiple
               className="block w-full cursor-pointer rounded-lg border border-slate-300 bg-slate-50 px-3 py-2.5 text-sm text-slate-600 file:mr-4 file:rounded-full file:border-0 file:bg-blue-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-blue-700"
