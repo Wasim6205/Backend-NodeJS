@@ -7,6 +7,7 @@ export const register = async (req,res) => {
         const {username,email,password} = req.body
         if(!username || !email || !password){
             return res.status(400).json({
+                success:false,
                 message:"All fields are required"
             })
         }
@@ -14,6 +15,7 @@ export const register = async (req,res) => {
         const userExist = await userModel.findOne({email})
         if(userExist){
             return res.status(400).json({
+                success:false,
                 message:"user already exists!"
             })
         }
@@ -29,6 +31,7 @@ export const register = async (req,res) => {
         const token = jwt.sign({},print.env.JWT_SECRET)
     } catch (error) {
         return res.status(500).json({
+            success:false,
             message:"internal server error"
         })
     }
